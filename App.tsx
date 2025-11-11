@@ -1,38 +1,28 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
+ * SuperWallets App
  * @format
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import React from 'react';
+import {SafeAreaView, StatusBar, StyleSheet, useColorScheme} from 'react-native';
+import GetStarted from './screens/GetStarted';
 
-function App() {
+function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
+  const handleGetStarted = () => {
+    console.log('Get Started action triggered in App');
+    // TODO: Navigate to the next screen or perform desired action
+  };
 
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
+    <SafeAreaView style={styles.container}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={isDarkMode ? '#000000' : '#FFFFFF'}
       />
-    </View>
+      <GetStarted onGetStarted={handleGetStarted} />
+    </SafeAreaView>
   );
 }
 
