@@ -23,12 +23,8 @@ platform :ios do
     project_root = File.expand_path('..', __dir__)
     ios_dir = File.join(project_root, 'ios')
 
-    # Ensure CocoaPods are installed
-    Dir.chdir(ios_dir) do
-      cocoapods(clean_install: false)
-    end
-
     # Build for iOS Simulator (no signing required)
+    # Note: CocoaPods should be installed before running this lane
     xcodebuild(
       workspace: File.join(ios_dir, "SuperWallets.xcworkspace"),
       scheme: "SuperWallets",
@@ -48,12 +44,8 @@ platform :ios do
     project_root = File.expand_path('..', __dir__)
     ios_dir = File.join(project_root, 'ios')
 
-    # Ensure CocoaPods are installed
-    Dir.chdir(ios_dir) do
-      cocoapods(clean_install: false)
-    end
-
     # Build the iOS app with the "Debug" configuration
+    # Note: CocoaPods should be installed before running this lane
     build_ios_app(
       workspace: File.join(ios_dir, "SuperWallets.xcworkspace"),
       scheme: "SuperWallets",
@@ -82,7 +74,10 @@ platform :ios do
     ios_dir = File.join(project_root, 'ios')
 
     Dir.chdir(ios_dir) do
-      cocoapods(clean_install: true)
+      cocoapods(
+        clean_install: false,
+        repo_update: true
+      )
     end
   end
 end
