@@ -3,16 +3,18 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, StatusBar, StyleSheet, useColorScheme} from 'react-native';
 import GetStarted from './screens/GetStarted';
+import Dashboard from './screens/Dashboard';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const [currentScreen, setCurrentScreen] = useState<'getstarted' | 'dashboard'>('getstarted');
 
   const handleGetStarted = () => {
-    console.log('Get Started action triggered in App');
-    // TODO: Navigate to the next screen or perform desired action
+    console.log('Navigating to Dashboard');
+    setCurrentScreen('dashboard');
   };
 
   return (
@@ -21,7 +23,11 @@ function App(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={isDarkMode ? '#000000' : '#FFFFFF'}
       />
-      <GetStarted onGetStarted={handleGetStarted} />
+      {currentScreen === 'getstarted' ? (
+        <GetStarted onGetStarted={handleGetStarted} />
+      ) : (
+        <Dashboard />
+      )}
     </SafeAreaView>
   );
 }

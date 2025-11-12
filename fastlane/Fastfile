@@ -1,0 +1,112 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+# iOS Platform Configuration
+platform :ios do
+  desc "Builds the iOS app for simulator (no signing required)"
+  lane :debug_simulator do
+    # Ensure CocoaPods are installed
+    cocoapods(
+      clean_install: false,
+      podfile: "./ios/Podfile"
+    )
+
+    # Build for iOS Simulator (no signing required)
+    xcodebuild(
+      workspace: "./ios/SuperWallets.xcworkspace",
+      scheme: "SuperWallets",
+      configuration: "Debug",
+      sdk: "iphonesimulator",
+      destination: "generic/platform=iOS Simulator",
+      build: true,
+      clean: false
+    )
+
+    UI.success("iOS Simulator build completed successfully!")
+  end
+
+  desc "Builds the iOS app in Debug configuration for device (requires code signing)"
+  lane :debug_build do |options|
+    # Ensure CocoaPods are installed
+    cocoapods(
+      clean_install: false,
+      podfile: "./ios/Podfile"
+    )
+
+    # Build the iOS app with the "Debug" configuration
+    build_ios_app(
+      workspace: "./ios/SuperWallets.xcworkspace",
+      scheme: "SuperWallets",
+      configuration: "Debug",
+      silent: false,
+      clean: false,
+      output_directory: "./ios/debug_builds",
+      output_name: "SuperWallets_Debug.ipa",
+      export_method: "development",
+      export_options: {
+        compileBitcode: false,
+        uploadBitcode: false,
+        uploadSymbols: false,
+        provisioningProfiles: options[:provisioning_profiles] || {}
+      }
+    )
+
+    UI.success("iOS Debug build completed successfully!")
+    UI.success("IPA location: ./ios/debug_builds/SuperWallets_Debug.ipa")
+  end
+
+  desc "Install iOS dependencies"
+  lane :install_pods do
+    cocoapods(
+      clean_install: true,
+      podfile: "./ios/Podfile"
+    )
+  end
+end
+
+# Android Platform Configuration
+platform :android do
+  desc "Builds the Android debug APK"
+  lane :debug_build do
+    # Clean previous builds
+    gradle(
+      task: "clean",
+      project_dir: "./android"
+    )
+
+    # Assemble the debug APK
+    gradle(
+      task: "assembleDebug",
+      project_dir: "./android"
+    )
+
+    # Locate and display the generated APK file path
+    apk_path = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+
+    UI.success("Android Debug build completed successfully!")
+    UI.success("APK location: #{apk_path}")
+  end
+
+  desc "Clean Android build artifacts"
+  lane :clean do
+    gradle(
+      task: "clean",
+      project_dir: "./android"
+    )
+  end
+end
+  
