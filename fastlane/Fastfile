@@ -20,10 +20,9 @@ platform :ios do
   desc "Builds the iOS app for simulator (no signing required)"
   lane :debug_simulator do
     # Ensure CocoaPods are installed
-    cocoapods(
-      clean_install: false,
-      podfile: "./ios/Podfile"
-    )
+    Dir.chdir("./ios") do
+      cocoapods(clean_install: false)
+    end
 
     # Build for iOS Simulator (no signing required)
     xcodebuild(
@@ -42,10 +41,9 @@ platform :ios do
   desc "Builds the iOS app in Debug configuration for device (requires code signing)"
   lane :debug_build do |options|
     # Ensure CocoaPods are installed
-    cocoapods(
-      clean_install: false,
-      podfile: "./ios/Podfile"
-    )
+    Dir.chdir("./ios") do
+      cocoapods(clean_install: false)
+    end
 
     # Build the iOS app with the "Debug" configuration
     build_ios_app(
@@ -71,10 +69,9 @@ platform :ios do
 
   desc "Install iOS dependencies"
   lane :install_pods do
-    cocoapods(
-      clean_install: true,
-      podfile: "./ios/Podfile"
-    )
+    Dir.chdir("./ios") do
+      cocoapods(clean_install: true)
+    end
   end
 end
 
