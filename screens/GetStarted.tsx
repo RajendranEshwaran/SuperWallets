@@ -95,7 +95,7 @@ const GetStarted: React.FC<GetStartedProps> = ({onGetStarted}) => {
             styles.title,
             {color: isDarkMode ? '#FFFFFF' : '#000000'},
           ]}>
-          Welcome to SuperWallets
+          Welcome to SuperWallet
         </Text>
 
         {/* Body Text */}
