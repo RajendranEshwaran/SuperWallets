@@ -1,42 +1,31 @@
 /**
- * Dashboard Screen
+ * Dashboard Screen with Bottom Tab Navigation
  * @format
  */
 
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  useColorScheme,
-} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import HomeTab from './tabs/HomeTab';
+import AnalyticsTab from './tabs/AnalyticsTab';
+import CardDetailsTab from './tabs/CardDetailsTab';
+import MoreTab from './tabs/MoreTab';
+import CustomTabBar from '../components/CustomTabBar';
+
+const Tab = createBottomTabNavigator();
 
 const Dashboard: React.FC = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
   return (
-    <View
-      style={[
-        styles.container,
-        {backgroundColor: isDarkMode ? '#000000' : '#FFFFFF'},
-      ]}>
-      <Text style={[styles.text, {color: isDarkMode ? '#FFFFFF' : '#000000'}]}>
-        Dashboard
-      </Text>
-    </View>
+    <Tab.Navigator
+      tabBar={props => <CustomTabBar {...props} />}
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Tab.Screen name="Home" component={HomeTab} />
+      <Tab.Screen name="Analytics" component={AnalyticsTab} />
+      <Tab.Screen name="CardDetails" component={CardDetailsTab} />
+      <Tab.Screen name="More" component={MoreTab} />
+    </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-});
 
 export default Dashboard;

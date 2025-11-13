@@ -5,6 +5,7 @@
 
 import React, {useState} from 'react';
 import {SafeAreaView, StatusBar, StyleSheet, useColorScheme} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
 import GetStarted from './screens/GetStarted';
 import Dashboard from './screens/Dashboard';
 
@@ -18,17 +19,19 @@ function App(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={isDarkMode ? '#000000' : '#FFFFFF'}
-      />
-      {currentScreen === 'getstarted' ? (
-        <GetStarted onGetStarted={handleGetStarted} />
-      ) : (
-        <Dashboard />
-      )}
-    </SafeAreaView>
+    <NavigationContainer>
+      <SafeAreaView style={styles.container}>
+        <StatusBar
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+          backgroundColor={isDarkMode ? '#000000' : '#FFFFFF'}
+        />
+        {currentScreen === 'getstarted' ? (
+          <GetStarted onGetStarted={handleGetStarted} />
+        ) : (
+          <Dashboard />
+        )}
+      </SafeAreaView>
+    </NavigationContainer>
   );
 }
 
