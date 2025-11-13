@@ -7,6 +7,11 @@ on:
       - develop
     types: [opened, synchronize, reopened]
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
   cancel-in-progress: true
@@ -41,13 +46,14 @@ jobs:
         if: success()
         with:
           script: |
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `### ✅ Code Quality Checks Passed\n\n` +
                     `- ESLint: Passed\n` +
-                    `- TypeScript: Passed`
+                    `- TypeScript: Passed\n` +
+                    `- Commit: ${context.sha.substring(0, 7)}`
             });
 
   test:
@@ -84,10 +90,11 @@ jobs:
         if: success()
         with:
           script: |
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `### ✅ Tests Passed\n\n` +
-                    `All tests completed successfully. Check artifacts for coverage report.`
+                    `All tests completed successfully. Check artifacts for coverage report.\n` +
+                    `**Commit:** ${context.sha.substring(0, 7)}`
             });

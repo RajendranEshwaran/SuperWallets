@@ -19,15 +19,14 @@ default_platform(:ios)
 platform :ios do
   desc "Builds the iOS app for simulator (no signing required)"
   lane :debug_simulator do
-    # Ensure CocoaPods are installed
-    cocoapods(
-      clean_install: false,
-      podfile: "./ios/Podfile"
-    )
+    # Get the project root directory (parent of fastlane directory)
+    project_root = File.expand_path('..', __dir__)
+    ios_dir = File.join(project_root, 'ios')
 
     # Build for iOS Simulator (no signing required)
+    # Note: CocoaPods should be installed before running this lane
     xcodebuild(
-      workspace: "./ios/SuperWallets.xcworkspace",
+      workspace: File.join(ios_dir, "SuperWallets.xcworkspace"),
       scheme: "SuperWallets",
       configuration: "Debug",
       sdk: "iphonesimulator",
@@ -41,20 +40,19 @@ platform :ios do
 
   desc "Builds the iOS app in Debug configuration for device (requires code signing)"
   lane :debug_build do |options|
-    # Ensure CocoaPods are installed
-    cocoapods(
-      clean_install: false,
-      podfile: "./ios/Podfile"
-    )
+    # Get the project root directory (parent of fastlane directory)
+    project_root = File.expand_path('..', __dir__)
+    ios_dir = File.join(project_root, 'ios')
 
     # Build the iOS app with the "Debug" configuration
+    # Note: CocoaPods should be installed before running this lane
     build_ios_app(
-      workspace: "./ios/SuperWallets.xcworkspace",
+      workspace: File.join(ios_dir, "SuperWallets.xcworkspace"),
       scheme: "SuperWallets",
       configuration: "Debug",
       silent: false,
       clean: false,
-      output_directory: "./ios/debug_builds",
+      output_directory: File.join(ios_dir, "debug_builds"),
       output_name: "SuperWallets_Debug.ipa",
       export_method: "development",
       export_options: {
@@ -66,15 +64,21 @@ platform :ios do
     )
 
     UI.success("iOS Debug build completed successfully!")
-    UI.success("IPA location: ./ios/debug_builds/SuperWallets_Debug.ipa")
+    UI.success("IPA location: #{File.join(ios_dir, 'debug_builds', 'SuperWallets_Debug.ipa')}")
   end
 
   desc "Install iOS dependencies"
   lane :install_pods do
-    cocoapods(
-      clean_install: true,
-      podfile: "./ios/Podfile"
-    )
+    # Get the project root directory (parent of fastlane directory)
+    project_root = File.expand_path('..', __dir__)
+    ios_dir = File.join(project_root, 'ios')
+
+    Dir.chdir(ios_dir) do
+      cocoapods(
+        clean_install: false,
+        repo_update: true
+      )
+    end
   end
 end
 
