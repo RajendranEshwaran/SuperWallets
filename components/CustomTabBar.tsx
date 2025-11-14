@@ -93,8 +93,11 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
               <TouchableOpacity
                 style={styles.plusButtonContainer}
                 onPress={() => {
-                  // Handle plus button action
-                  console.log('Plus button pressed');
+                  // Navigate to AddNewCard screen
+                  const parentNav = navigation.getParent();
+                  if (parentNav) {
+                    parentNav.navigate('AddNewCard' as never);
+                  }
                 }}>
                 <View style={styles.plusButton}>
                   <Text style={styles.plusIcon}>+</Text>
@@ -212,10 +215,10 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#667EEA',
+    backgroundColor: '#7D73C3',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#667EEA',
+    shadowColor: '#67666B',
     shadowOffset: {width: 0, height: 4},
     shadowOpacity: 0.3,
     shadowRadius: 8,
