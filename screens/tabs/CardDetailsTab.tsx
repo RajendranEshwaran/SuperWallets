@@ -57,7 +57,7 @@ const CardDetailsTab: React.FC = () => {
               styles.detailLabel,
               {color: isDarkMode ? '#CCCCCC' : '#666666'},
             ]}>
-            Card Type
+            Card Types
           </Text>
           <Text
             style={[
