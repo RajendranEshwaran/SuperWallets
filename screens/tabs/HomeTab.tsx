@@ -12,15 +12,21 @@ import {
   useColorScheme,
   Alert,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import ReceiverList from '../../components/ReceiverList';
 import {Receiver} from '../../components/ReceiverCard';
 import ExpensesList from '../../components/ExpensesList';
 import { Expenses } from '../../components/ExpensesCard';
 import CardList from '../../components/CardList';
 import {Card} from '../../components/Card';
+import NavigationBar from '../../components/NavigationBar';
+
+type NavigationProp = NativeStackNavigationProp<any>;
 
 const HomeTab: React.FC = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const navigation = useNavigation<NavigationProp>();
 
   // Sample receivers data
   const [receivers, setReceivers] = useState<Receiver[]>([
@@ -115,7 +121,15 @@ const HomeTab: React.FC = () => {
   };
 
   const handleAddCardPress = () => {
-    Alert.alert('Add Card', 'Add new card functionality');
+    navigation.navigate('AddNewCard');
+  };
+
+  const handleMenuPress = () => {
+    Alert.alert('Menu', 'Menu navigation functionality');
+  };
+
+  const handleNotificationPress = () => {
+    Alert.alert('Notifications', 'View your notifications');
   };
 
   return (
@@ -124,6 +138,13 @@ const HomeTab: React.FC = () => {
         styles.container,
         {backgroundColor: isDarkMode ? '#000000' : '#F5F5F5'},
       ]}>
+      {/* Navigation Bar */}
+      <NavigationBar
+        title="My Wallet"
+        onLeftPress={handleMenuPress}
+        onRightPress={handleNotificationPress}
+      />
+
       {/* Main Content */}
       <ScrollView style={styles.scrollContent}>
         {/* Balance Card */}
@@ -196,14 +217,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
+    alignItems: 'center',
   },
   balanceLabel: {
     fontSize: 14,
     marginBottom: 8,
+    textAlign: 'center',
   },
   balanceAmount: {
     fontSize: 36,
     fontWeight: 'bold',
+    textAlign: 'center',
   }
 });
 
