@@ -12,7 +12,9 @@ import {
   TouchableOpacity,
   useColorScheme,
   StatusBar,
+  Platform,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 interface NavigationBarProps {
   title: string;
@@ -36,12 +38,19 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={isDarkMode ? '#000000' : '#F5F5F5'}
+        translucent={false}
       />
-      <View
+      <SafeAreaView
+        edges={['top']}
         style={[
-          styles.container,
+          styles.safeArea,
           {backgroundColor: isDarkMode ? '#000000' : '#F5F5F5'},
         ]}>
+        <View
+          style={[
+            styles.container,
+            {backgroundColor: isDarkMode ? '#000000' : '#F5F5F5'},
+          ]}>
         {/* Left Icon */}
         <TouchableOpacity
           style={styles.iconButton}
@@ -68,18 +77,22 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
           hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
           <Text style={styles.rightIcon}>{rightIcon}</Text>
         </TouchableOpacity>
-      </View>
+        </View>
+      </SafeAreaView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    // SafeAreaView handles the top padding for notch/status bar
+  },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingTop: 50,
+    paddingTop: 10,
     paddingBottom: 16,
   },
   iconButton: {

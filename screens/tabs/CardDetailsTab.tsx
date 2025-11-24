@@ -4,23 +4,41 @@
  */
 
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView, useColorScheme} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, useColorScheme, Alert} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import NavigationBar from '../../components/NavigationBar';
+
+type NavigationProp = NativeStackNavigationProp<any>;
 
 const CardDetailsTab: React.FC = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const navigation = useNavigation<NavigationProp>();
+
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+
+  const handleNotificationPress = () => {
+    Alert.alert('Notifications', 'View your notifications');
+  };
 
   return (
-    <ScrollView
+    <View
       style={[
         styles.container,
         {backgroundColor: isDarkMode ? '#000000' : '#F5F5F5'},
       ]}>
-      <View style={styles.header}>
-        <Text
-          style={[styles.title, {color: isDarkMode ? '#FFFFFF' : '#000000'}]}>
-          My Cards
-        </Text>
-      </View>
+      {/* Navigation Bar */}
+      <NavigationBar
+        title="My Cards"
+        leftIcon="←"
+        onLeftPress={handleBackPress}
+        onRightPress={handleNotificationPress}
+      />
+
+      {/* Content */}
+      <ScrollView style={styles.content}>
 
       <View style={styles.cardContainer}>
         <View style={[styles.creditCard, styles.gradientCard]}>
@@ -101,6 +119,7 @@ const CardDetailsTab: React.FC = () => {
         </View>
       </View>
     </ScrollView>
+    </View>
   );
 };
 
@@ -108,13 +127,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    padding: 20,
-    paddingTop: 40,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
+  content: {
+    flex: 1,
   },
   cardContainer: {
     padding: 20,

@@ -11,10 +11,25 @@ import {
   ScrollView,
   TouchableOpacity,
   useColorScheme,
+  Alert,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import NavigationBar from '../../components/NavigationBar';
+
+type NavigationProp = NativeStackNavigationProp<any>;
 
 const MoreTab: React.FC = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const navigation = useNavigation<NavigationProp>();
+
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+
+  const handleNotificationPress = () => {
+    Alert.alert('Notifications', 'View your notifications');
+  };
 
   const menuItems = [
     {title: 'Profile Settings', icon: '👤'},
@@ -25,17 +40,21 @@ const MoreTab: React.FC = () => {
   ];
 
   return (
-    <ScrollView
+    <View
       style={[
         styles.container,
         {backgroundColor: isDarkMode ? '#000000' : '#F5F5F5'},
       ]}>
-      <View style={styles.header}>
-        <Text
-          style={[styles.title, {color: isDarkMode ? '#FFFFFF' : '#000000'}]}>
-          More
-        </Text>
-      </View>
+      {/* Navigation Bar */}
+      <NavigationBar
+        title="More"
+        leftIcon="←"
+        onLeftPress={handleBackPress}
+        onRightPress={handleNotificationPress}
+      />
+
+      {/* Content */}
+      <ScrollView style={styles.content}>
 
       <View
         style={[
@@ -96,6 +115,7 @@ const MoreTab: React.FC = () => {
         <Text style={styles.logoutText}>Log Out</Text>
       </TouchableOpacity>
     </ScrollView>
+    </View>
   );
 };
 
@@ -103,13 +123,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    padding: 20,
-    paddingTop: 40,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
+  content: {
+    flex: 1,
   },
   profileCard: {
     margin: 20,
