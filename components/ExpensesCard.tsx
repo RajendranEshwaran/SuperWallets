@@ -4,6 +4,7 @@ import {View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native'
 export interface Expenses {
     id: number,
     name: string,
+    icon?: string,
     imageUrl?: string
 }
 
@@ -15,7 +16,13 @@ interface ExpensesProps {
 const ExpensesCard: React.FC<ExpensesProps> = ({expenses, onPress}) => { return(
 <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.imageContainer}>
-        {expenses.imageUrl ? (
+        {expenses.icon ? (
+          <View style={styles.iconContainer}>
+            <Text style={styles.iconText}>
+              {expenses.icon}
+            </Text>
+          </View>
+        ) : expenses.imageUrl ? (
           <Image source={{uri: expenses.imageUrl}} style={styles.image} />
         ) : (
           <View style={styles.placeholderImage}>
@@ -60,6 +67,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#FFFFFF',
+  },
+  iconContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#F3F4F6',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconText: {
+    fontSize: 32,
   },
   name: {
     fontSize: 12,

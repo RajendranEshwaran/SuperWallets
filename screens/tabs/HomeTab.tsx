@@ -16,6 +16,8 @@ import ReceiverList from '../../components/ReceiverList';
 import {Receiver} from '../../components/ReceiverCard';
 import ExpensesList from '../../components/ExpensesList';
 import { Expenses } from '../../components/ExpensesCard';
+import CardList from '../../components/CardList';
+import {Card} from '../../components/Card';
 
 const HomeTab: React.FC = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -48,21 +50,47 @@ const HomeTab: React.FC = () => {
     {
       id: 1,
       name: 'Groceries',
-      imageUrl: 'https://i.pravatar.cc/150?img=5',
+      icon: '🛒',
     },
     {
       id: 2,
       name: 'Transportation',
-      imageUrl: 'https://i.pravatar.cc/150?img=6',
+      icon: '🚗',
     },
     {
       id: 3,
       name: 'Dining',
-      imageUrl: 'https://i.pravatar.cc/150?img=7',
+      icon: '🍽️',
     },
     {
       id: 4,
       name: 'Shopping',
+      icon: '🛍️',
+    },
+  ]);
+
+  // Sample cards data
+  const [cards, setCards] = useState<Card[]>([
+    {
+      id: '1',
+      cardType: 'Visa',
+      lastFourDigits: '4242',
+      cardHolderName: 'John Doe',
+      backgroundColor: '#667EEA',
+    },
+    {
+      id: '2',
+      cardType: 'Mastercard',
+      lastFourDigits: '8888',
+      cardHolderName: 'John Doe',
+      backgroundColor: '#F56565',
+    },
+    {
+      id: '3',
+      cardType: 'Amex',
+      lastFourDigits: '1234',
+      cardHolderName: 'John Doe',
+      backgroundColor: '#48BB78',
     },
   ]);
 
@@ -82,6 +110,14 @@ const HomeTab: React.FC = () => {
     Alert.alert('Add Expense', 'Add new expense functionality');
   };
 
+  const handleCardPress = (card: Card) => {
+    Alert.alert('Card Selected', `You selected ${card.cardType} ending in ${card.lastFourDigits}`);
+  };
+
+  const handleAddCardPress = () => {
+    Alert.alert('Add Card', 'Add new card functionality');
+  };
+
   return (
     <View
       style={[
@@ -99,6 +135,13 @@ const HomeTab: React.FC = () => {
             $12,345.67
           </Text>
         </View>
+
+        {/* Card List */}
+        <CardList
+          cards={cards}
+          onCardPress={handleCardPress}
+          onAddPress={handleAddCardPress}
+        />
       </ScrollView>
 
 {/* Expenses List at Bottom */}
